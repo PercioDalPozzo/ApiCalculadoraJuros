@@ -1,8 +1,4 @@
-﻿using ApiCalculadora;
-using ApiCalculadora.Models;
-using Aplicacao.Calculadora;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.WebUtilities;
+﻿using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Text.Json;
@@ -32,21 +28,21 @@ namespace TesteUnitario.Integracao
         [TestMethod]
         public async Task Teste_CalculoRetornaCorreto()
         {
-            var url = QueryHelpers.AddQueryString("Calculadora/CalcularJuros", new Dictionary<string, string>
-            {             
-                { "QtMeses", "6" },
-                { "Valor", "200.11" },                
-            });
+            //var url = QueryHelpers.AddQueryString("Calculadora/CalcularJuros", new Dictionary<string, string>
+            //{             
+            //    { "QtMeses", "6" },
+            //    { "Valor", "200.11" },                
+            //});
 
-            var apiJuros = new ApiCalculadora();
-            var response = await apiJuros.Client.GetAsync(url);
+            //var apiJuros = new ApiCalculadora();
+            //var response = await apiJuros.Client.GetAsync(url);
 
-            response.EnsureSuccessStatusCode();
+            //response.EnsureSuccessStatusCode();
 
-            RetornoViewModel retorno = await JsonSerializer.DeserializeAsync<RetornoViewModel>(await response.Content.ReadAsStreamAsync());
+            //RetornoViewModel retorno = await JsonSerializer.DeserializeAsync<RetornoViewModel>(await response.Content.ReadAsStreamAsync());
             
 
-            var teste = (RetornoViewModel)retorno;
+            //var teste = (RetornoViewModel)retorno;
 
            // Assert.AreEqual(120.06m, retorno.Resultado.ValorJuros);
         }
