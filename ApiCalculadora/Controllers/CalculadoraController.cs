@@ -17,17 +17,25 @@ namespace ApiCalculadora.Controllers
             _aplicCalculadora = aplicCalculadora;
         }
 
-        public async Task<RetornoViewModel> CalcularJuros(CalcJurosView view)
+        public async Task<RetornoCalcularJurosView> CalcularJuros(CalcJurosView view)
         {
-            try
-            {
+           
                 var retorno = await _aplicCalculadora.CalcularJuros(view);
-                return RetornoViewModel.RetornoSucesso(retorno);
-            }
-            catch (Exception e)
-            {
-                return RetornoViewModel.RetornoErro(e.Message);
-            }
+                return retorno;
+           
         }
+
+        //public async Task<RetornoViewModel> CalcularJuros(CalcJurosView view)
+        //{
+        //    try
+        //    {
+        //        var retorno = await _aplicCalculadora.CalcularJuros(view);
+        //        return RetornoViewModel.RetornoSucesso(retorno);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return RetornoViewModel.RetornoErro(e.Message);
+        //    }
+        //}
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Aplicacao.Resolvedor;
 using System;
 using System.Threading.Tasks;
+using Aplicacao.Extencao;
 
 namespace Aplicacao.Calculadora
 {
@@ -14,15 +15,17 @@ namespace Aplicacao.Calculadora
 
         public async Task<RetornoCalcularJurosView> CalcularJuros(CalcJurosView view)
         {
-            var taxa = await _resolvedorTaxa.ObterTaxaAsync();
-            var valorJurosPorMes = decimal.Round((view.Valor * (taxa / 100)),2);
-            var jurosTotalCalculado = decimal.Round(valorJurosPorMes * view.QtMeses, 2);
+            var taxa = await _resolvedorTaxa.ObterTaxaAsync();            
+          
+            var valorCalculado = view.Valor * (decimal)(Math.Pow((double)taxa+1, view.QtMeses));                        
+            
+            var valorCalculadoTruncado = valorCalculado.Truncate(2);
 
             var retorno = new RetornoCalcularJurosView();
             retorno.Taxa = taxa;
-            retorno.ValorJurosPorMes = valorJurosPorMes;
-            retorno.ValorJuros = jurosTotalCalculado;
-            retorno.ValorTotal = view.Valor + jurosTotalCalculado;
+            retorno.ValorJuros = valorCalculadoTruncado - view.Valor;
+            retorno.MediaJurosPorMes =(retorno.ValorJuros / view.QtMeses).Truncate(2);
+            retorno.ValorTotal = valorCalculadoTruncado;
             return retorno;
         }
     }

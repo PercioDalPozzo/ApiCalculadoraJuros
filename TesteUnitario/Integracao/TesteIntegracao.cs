@@ -1,4 +1,5 @@
 ﻿using ApiCalculadora.Models;
+using Aplicacao.Calculadora;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
@@ -29,6 +30,7 @@ namespace TesteUnitario.Integracao
         [TestMethod]
         public async Task Teste_CalculoRetornaCorreto()
         {
+            // arrange
             var url = QueryHelpers.AddQueryString("Calculadora/CalcularJuros", new Dictionary<string, string>
             {
                 { "QtMeses", "6" },
@@ -40,14 +42,18 @@ namespace TesteUnitario.Integracao
 
             response.EnsureSuccessStatusCode();
 
-            var retorno =await response.Content.ReadAsStreamAsync();
-            var retorno2 = await JsonSerializer.DeserializeAsync<object>(retorno);
-            RetornoViewModel retorno3 = await JsonSerializer.DeserializeAsync<RetornoViewModel>(await response.Content.ReadAsStreamAsync());
+            var content =await response.Content.ReadAsStreamAsync();
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+            var retornoTipado = await JsonSerializer.DeserializeAsync<RetornoCalcularJurosView>(content, options);
 
-
-          //  var teste = (RetornoViewModel)retorno;
-
-          //  Assert.AreEqual(120.06m, retorno.Resultado.ValorJuros);
+            // assert               
+            Assert.AreEqual(10m, retornoTipado.Taxa);
+            Assert.AreEqual(120.06m, retornoTipado.ValorJuros);
+            Assert.AreEqual(20.01m, retornoTipado.MediaJurosPorMes);
+            Assert.AreEqual(320.17, retornoTipado.ValorTotal);
         }
 
 
